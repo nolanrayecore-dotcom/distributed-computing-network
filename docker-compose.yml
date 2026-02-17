@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      - ./data:/app
+    container_name: computing-server
+
+  client1:
+    build: ./client
+    environment:
+      - SERVER_URL=http://server:3000
+      - DEVICE_NAME=worker-1
+    depends_on:
+      - server
+    container_name: computing-client-1
+
+  client2:
+    build: ./client
+    environment:
+      - SERVER_URL=http://server:3000
+      - DEVICE_NAME=worker-2
+    depends_on:
+      - server
+    container_name: computing-client-2
+
+  client3:
+    build: ./client
+    environment:
+      - SERVER_URL=http://server:3000
+      - DEVICE_NAME=worker-3
+    depends_on:
+      - server
+    container_name: computing-client-3
